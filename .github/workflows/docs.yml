@@ -11,7 +11,11 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Respository
+      - name: Install mold
+        run: |
+          sudo apt update
+          sudo apt install -y mold
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           repository: 'zed-industries/zed'
@@ -23,7 +27,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Clean Target
         run: cargo clean --doc
-      - name: Buiold Docs
+      - name: Build Docs
         run: cargo doc --no-deps -p gpui
       - name: Remove Lock
         run: rm target/doc/.lock
