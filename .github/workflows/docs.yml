@@ -28,7 +28,7 @@ jobs:
       - name: Remove Lock
         run: rm target/doc/.lock
       - name: Upload artifact
-        uses: actions/upload-pages/artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
           path: target/doc
   deploy:
