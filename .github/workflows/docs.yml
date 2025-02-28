@@ -29,12 +29,14 @@ jobs:
         run: cargo clean --doc
       - name: Build Docs
         run: cargo doc --no-deps -p gpui
+      - name: Redirect to gpui crate
+        run: echo '<meta http-equiv="refresh" content="0;url=gpui/index.html">' > target/doc/index.html
       - name: Remove Lock
         run: rm target/doc/.lock
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: target/doc/gpui
+          path: target/doc
   deploy:
     name: Deploy
     environment:
