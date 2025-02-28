@@ -1,0 +1,44 @@
+name: Build and Publish Documentation
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Respository
+      - uses: actions/checkout@v4
+        with:
+          repository: 'zed-industries/zed'
+      - name: Setup Rust Toolchain
+        uses: dsherret/rust-toolchain-file@v1
+      - name: Configure Cache
+        uses: Swatinem/rust-cache@v2
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Clean Target
+        run: cargo clean --doc
+      - name: Buiold Docs
+        run: cargo doc --no-deps -p gpui
+      - name: Remove Lock
+        run: rm target/doc/.lock
+      - name: Upload artifact
+        uses: actions/upload-pages/artifact@v3
+        with:
+          path: target/doc
+  deploy:
+    name: Deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
