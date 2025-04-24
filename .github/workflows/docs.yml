@@ -11,10 +11,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Install mold
+      - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y mold
+          sudo apt install -y mold libx11-dev
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
